@@ -34,7 +34,13 @@ AFRAME.registerComponent("bullets", {
         bullet.setAttribute("velocity", direction.multiplyScalar(-10));
 
         var scene = document.querySelector("#scene");
-
+        //agregar una escucha de eventos a la colision de una bala
+        bullet.addEventListener("collide", this.removeBullet);
+        //establecer la bala como una entidad dinamica 
+        bullet.setAttribute("dynamic-body", {
+          shape: "sphere",
+          mass: "0",
+        });
         scene.appendChild(bullet);
       }
     });
@@ -48,24 +54,28 @@ AFRAME.registerComponent("bullets", {
     console.log(e.detail.body.el);
 
     // Elemento de la bala
-
+    var element = e.detail.target.el;
 
     // Elemento que es golpeado
- 
+    var elementHit = e.detail.body.el;
 
     if (elementHit.id.includes("box")) 
       {
         // Establecer el atributo "material"
-        
-
+        elementHit.setAttribute("material", {
+          opacity: 0.6,
+          transparent: true,
+        });
+        //
         // Impulso y vector punto
         
 
         // Eliminar escucha de evento
-        
+        element.removeEventListener("collide", this.shoot);
         
         // Remover las balas de la escena
-      
+        var scene = document.querySelector("#scene");
+        scene.removeChild(element);
     }
   },
 });

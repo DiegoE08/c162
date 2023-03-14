@@ -68,7 +68,9 @@ AFRAME.registerComponent("bullets", {
         });
         //
         // Impulso y vector punto
-        
+        var impulse = new CANNON.Vec3(-2, 2, 1);
+        var worldPoint = new CANNON.Vec3().copy(elementHit.getAttribute("position"));
+        elementHit.body.applyImpulse(impulse, worldPoint);
 
         // Eliminar escucha de evento
         element.removeEventListener("collide", this.shoot);
